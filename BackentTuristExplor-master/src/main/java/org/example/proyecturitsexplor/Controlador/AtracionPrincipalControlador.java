@@ -2,9 +2,7 @@ package org.example.proyecturitsexplor.Controlador;
 
 import org.example.proyecturitsexplor.Entidades.AtracionPrincipal;
 import org.example.proyecturitsexplor.Repositorios.AtracionPrincipalRepositorio;
-import org.example.proyecturitsexplor.Repositorios.DestinosRepositorio;
 import org.example.proyecturitsexplor.Servicios.AtracionPrincipalServicio;
-import org.example.proyecturitsexplor.Servicios.DestinosServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +14,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:8080")
+
 public class AtracionPrincipalControlador {
     @Autowired
     private AtracionPrincipalRepositorio atracionPrincipalRepositorio;
@@ -24,57 +23,62 @@ public class AtracionPrincipalControlador {
 
     //CRUD
     @PostMapping("/atracionPrincipals/guardarAtracionPrincipal")
-    public ResponseEntity<AtracionPrincipal> guardarDestino(@RequestBody AtracionPrincipal atracionPrincipal) {
+    public ResponseEntity<AtracionPrincipal> guardarAtracionPrincipal(@RequestBody AtracionPrincipal atracionPrincipal) {
         if (atracionPrincipal.getNombre()==null || atracionPrincipal.getHorario()==null || atracionPrincipal.getDescripcion()==null || atracionPrincipal.getHorarioFuncionamiento()==null){
             return  ResponseEntity.badRequest().build();
         }
         AtracionPrincipal atracionPrincipalGuardado = atracionPrincipalServicio.guardarAtracionPrincipal(atracionPrincipal);
         return ResponseEntity.status(HttpStatus.CREATED).body(atracionPrincipalGuardado);
     }
-    //recuperar todos las atraciones principales
+
+    //Recuperar todos las atraciones principales
     @GetMapping("/atracion/obtenerTodosLasAtracionesPrincipales ")
-    public ResponseEntity<List<AtracionPrincipal>>obtenerTodosLosDestinos(){
-        List<AtracionPrincipal> atracionPrincipal = atracionPrincipalServicio.obtenerTodosLosDestinos();
+    public ResponseEntity<List<AtracionPrincipal>>obtenerTodosLosAtracionPrincipal(){
+        List<AtracionPrincipal> atracionPrincipal = atracionPrincipalServicio.obtenerTodosLosAtracionPrincipal();
         return ResponseEntity.ok(atracionPrincipal);
     }
-    //recuperar destinos por id
-    @GetMapping("/destinos/recuperarPorId/{id}")
-    public ResponseEntity<AtracionPrincipal>obtenerDestinosPorId(@PathVariable Long id){
-        AtracionPrincipal destinos = destinosServicio.obtenerDestinosPorId(id);
-        return ResponseEntity.ok(destinos);
+
+    //Recuperar atracion principal por id
+    @GetMapping("/atricionesPrincipales/recuperarPorId/{id}")
+    public ResponseEntity<AtracionPrincipal>obtenerAtracionPrincipalPorId(@PathVariable Long id){
+        AtracionPrincipal atracionPrincipal = atracionPrincipalServicio.obtenerAtracionPrincipalPorId(id);
+        return ResponseEntity.ok(atracionPrincipal);
     }
-    //actulizar destino
-    @PutMapping("destinos/{id}")
-    public ResponseEntity<?> actualizarDestinos(@PathVariable("id") Long id, @RequestBody Destinos destinosActualizada) {
+
+    //Actulizar atracion principal
+    @PutMapping("atracionPrincipal/{id}")
+    public ResponseEntity<?> actualizarAtracionPrincipal(@PathVariable("id") Long id, @RequestBody AtracionPrincipal atracionPrincipalActualizada) {
         try {
-            // Verificar si el ID proporcionado en la ruta coincide con el ID del destino actualizada
-            if (!id.equals(destinosActualizada.getId())) {
-                throw new IllegalArgumentException("El ID de la Destino del cuerpo no coincide con el ID proporcionado en la ruta.");
+            // Verificar si el ID proporcionado en la ruta coincide con el ID de la atracion principal actualizada
+            if (!id.equals(atracionPrincipalActualizada.getId())) {
+                throw new IllegalArgumentException("El ID de la atracion principal del cuerpo no coincide con el ID proporcionado en la ruta.");
             }
-            AtracionPrincipal destinosActual = destinosServicio.obtenerDestinosPorId(id);
-            if (destinosActual == null) {
-                return new ResponseEntity<>("No se encontró ningun Destino con el ID proporcionado.", HttpStatus.NOT_FOUND);
+            AtracionPrincipal atracionPrincipalActual = atracionPrincipalServicio.obtenerAtracionPrincipalPorId(id);
+            if (atracionPrincipalActual == null) {
+                return new ResponseEntity<>("No se encontró ningun atracion principal con el ID proporcionado.", HttpStatus.NOT_FOUND);
             }
-            Destinos destinosActualizadaGuardada = destinosServicio.actulizarDestinos(destinosActualizada);
-            return new ResponseEntity<>(destinosActualizadaGuardada, HttpStatus.OK);
+            AtracionPrincipal atracionActualizadaGuardada = atracionPrincipalServicio.actulizarAtracionPrincipal(atracionPrincipalActualizada);
+            return new ResponseEntity<>(atracionActualizadaGuardada, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
-    //Eliminar destino
-    @DeleteMapping("/destinos/{id}")
-    public ResponseEntity<String> eliminarDestinoPorId(@PathVariable Long id) {
-        destinosServicio.eliminarDestino(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Destino con ID " + id + " eliminada correctamente.");
+
+    //Eliminar Atracion Principal
+    @DeleteMapping("/atracionPrincipales/{id}")
+    public ResponseEntity<String> eliminarAtracionPrincipalPorId(@PathVariable Long id) {
+        atracionPrincipalServicio.eliminarAtracionPrincipal(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Atracion Principal con ID " + id + " eliminada correctamente.");
     }
-    // verificar si un destino existe en la base de datos
-    @GetMapping("/atracion/existe/{destinoName}")
-    public ResponseEntity<?> verificarDestinosExistente(@PathVariable String destinoName) {
+
+    //Verificar si una atracion principal existe en la base de datos
+    @GetMapping("/atracionPrincipal/existe/{nombre}")
+    public ResponseEntity<?> verificarAtracionPrincipalExistente(@PathVariable String nombre) {
         try {
-            boolean existe = destinosServicio.verificarDestinoExistente(destinoName);
+            boolean existe = atracionPrincipalServicio.verificarAtracionPrincipalExistente(nombre);
             return ResponseEntity.ok(existe);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al verificar si el destino existe por Nombre: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al verificar si el atracion principal existe por Nombre: " + e.getMessage());
         }
     }
 }

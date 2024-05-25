@@ -1,4 +1,5 @@
 package org.example.proyecturitsexplor.Controlador;
+
 import org.example.proyecturitsexplor.Entidades.Destinos;
 import org.example.proyecturitsexplor.Repositorios.DestinosRepositorio;
 import org.example.proyecturitsexplor.Servicios.DestinosServicio;
@@ -8,11 +9,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+
 @Controller
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:8080")
-public class DestinosControlador {
 
+public class DestinosControlador {
     @Autowired
     private DestinosRepositorio destinosRepositorio;
     @Autowired
@@ -27,7 +29,8 @@ public class DestinosControlador {
         Destinos destinosGuardado = destinosServicio.guardarDestino(destinos);
             return ResponseEntity.status(HttpStatus.CREATED).body(destinosGuardado);
     }
-    //recuperar todos los destinos
+
+    //Recuperar todos los destinos
     @GetMapping("/destinos/obtenerTodosLosDestinos")
     public ResponseEntity<List<Destinos>>obtenerTodosLosDestinos(){
         List<Destinos> destinos = destinosServicio.obtenerTodosLosDestinos();
@@ -39,7 +42,8 @@ public class DestinosControlador {
             Destinos destinos = destinosServicio.obtenerDestinosPorId(id);
                 return ResponseEntity.ok(destinos);
     }
-    //actulizar destino
+
+    //Actulizar destino
     @PutMapping("destinos/{id}")
     public ResponseEntity<?> actualizarDestinos(@PathVariable("id") Long id, @RequestBody Destinos destinosActualizada) {
         try {
@@ -57,13 +61,15 @@ public class DestinosControlador {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     //Eliminar destino
     @DeleteMapping("/destinos/{id}")
     public ResponseEntity<String> eliminarDestinoPorId(@PathVariable Long id) {
         destinosServicio.eliminarDestino(id);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Destino con ID " + id + " eliminada correctamente.");
     }
-    // verificar si un destino existe en la base de datos
+
+    //Verificar si un destino existe en la base de datos
     @GetMapping("/destinos/existe/{destinoName}")
     public ResponseEntity<?> verificarDestinosExistente(@PathVariable String destinoName) {
         try {
