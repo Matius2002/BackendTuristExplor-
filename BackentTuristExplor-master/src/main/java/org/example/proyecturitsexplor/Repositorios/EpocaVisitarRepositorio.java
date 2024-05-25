@@ -1,4 +1,11 @@
 package org.example.proyecturitsexplor.Repositorios;
 
-public interface EpocaVisitarRepositorio {
+import org.example.proyecturitsexplor.Entidades.EpocaVisitar;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
+
+@Service
+public interface EpocaVisitarRepositorio extends JpaRepository<EpocaVisitar, Long> {
+
+    boolean existsByNombre(String nombre);
 }
