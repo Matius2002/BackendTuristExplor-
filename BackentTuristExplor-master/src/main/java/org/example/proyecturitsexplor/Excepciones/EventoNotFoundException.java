@@ -1,11 +1,12 @@
 package org.example.proyecturitsexplor.Excepciones;
 
-public class UserNotFoundException extends RuntimeException{
+public class EventoNotFoundException extends RuntimeException{
     private Long id;
 
-    public UserNotFoundException(Long id) {
-        super("User no encontrado: " + id);
+    public EventoNotFoundException(Long id) {
+        super("Evento no encontrado: " + id);
         this.id = id;
+
     }
     public Long getId() {
         return id;

@@ -1,5 +1,5 @@
 package org.example.proyecturitsexplor.Repositorios;
-import org.example.proyecturitsexplor.Entidades.Destinos;
+
 import org.example.proyecturitsexplor.Entidades.TipoTurismo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;

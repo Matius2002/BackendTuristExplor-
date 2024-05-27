@@ -67,7 +67,7 @@ public class Experiencia {
         this.usuario = usuario;
     }
 
-    public int getCalificacion() {
+    public Integer getCalificacion() {
         return calificacion;
     }
 
